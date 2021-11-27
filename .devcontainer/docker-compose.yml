@@ -1,0 +1,26 @@
+version: "3.9"
+services:
+  app:
+    image: devcontainer
+    build:
+      args:
+        - USERNAME=vscode
+      context: .
+    container_name: go_devcontainer
+    volumes:
+      - ../:/workspace
+      - ~/.docker:/vscode/.docker:z
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/.ssh/id_rsa:/vscode/.ssh/id_rsa:z
+      - ~/.ssh/id_rsa.pub:/vscode/.ssh/id_rsa.pub:z
+      - ~/.gitconfig:/vscode/.gitconfig:z
+      - ~/.kube:/vscode/.kube:z
+    environment:
+      - TZ=
+    cap_add:
+      # For debugging with dlv
+      - SYS_PTRACE
+    security_opt:
+      # For debugging with dlv
+      - seccomp:unconfined
+    entrypoint: zsh -c "while sleep 1000; do :; done"
